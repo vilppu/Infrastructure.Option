@@ -1,3 +1,9 @@
+[![Build Status](https://vilppu.visualstudio.com/Arado.Option/_apis/build/status/vilppu.Arado.Option?branchName=master)](https://vilppu.visualstudio.com/Arado.Option/_build/latest?definitionId=1&branchName=master)
+
+# Usage
+
+Get nuget from https://www.nuget.org/packages/Arado.Option/
+
 # Overview
 
 `Option<T>` is a simple option type usable with C#

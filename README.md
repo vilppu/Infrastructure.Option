@@ -30,7 +30,7 @@ var noneString = Option.None<string>();
 var noneInteger = Option.None<int>();
 ```
 
-## Patternt matching optional values
+## Pattern matching optional values
 
 ```
 var option = Option.Some("Example value");

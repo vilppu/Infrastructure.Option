@@ -9,7 +9,7 @@
     <ProjectGuid>{C8168A44-87FD-4436-AB3A-BC3437077E11}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arado.Option.Tests.Framework</RootNamespace>
+    <RootNamespace>Arado.Tests.Framework</RootNamespace>
     <AssemblyName>Arado.Option.Tests.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

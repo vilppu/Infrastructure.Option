@@ -38,7 +38,7 @@ jobs:
       configuration: '$(buildConfiguration)'
 
 - job: releaseNuget
-  # condition: startsWith(variables['build.sourceBranch'], 'refs/tags/')
+  condition: startsWith(variables['build.sourceBranch'], 'refs/tags/')
   dependsOn: build
   pool:
     vmImage: 'windows-latest'

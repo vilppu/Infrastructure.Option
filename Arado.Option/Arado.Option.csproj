@@ -2,8 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Arado.Option</PackageId>
-    <Version>1.0.0</Version>    
+    <VersionPrefix>1.1.0</Version>    
     <Description>Option type usable with C#</Description>
     <IsPackable>true</IsPackable>
+    <RootNamespace>Arado</RootNamespace>
   </PropertyGroup>
 </Project>

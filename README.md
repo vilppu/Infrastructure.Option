@@ -2,7 +2,7 @@
 
 # Usage
 
-Get nuget from https://www.nuget.org/packages/Arado.Option/
+Get nuget https://www.nuget.org/packages/Arado.Option/
 
 # Overview
 

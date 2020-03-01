@@ -60,8 +60,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NoneTests.cs" />
-    <Compile Include="SomeTests.cs" />
+    <Compile Include="..\Infrastructure.Option.Tests.Core\NoneTests.cs">
+      <Link>NoneTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure.Option.Tests.Core\OptionsTests.cs">
+      <Link>OptionsTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Infrastructure.Option.Tests.Core\SomeTests.cs">
+      <Link>SomeTests.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

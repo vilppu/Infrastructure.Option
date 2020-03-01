@@ -64,5 +64,26 @@ namespace Infrastructure.Tests.Core
 
             actual.ShouldBeFalse();
         }
+
+        [Fact]
+        public void IsNone_True()
+        {
+            var sut = Option.None<string>();
+
+            var actual = sut.IsNone();
+
+            actual.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Or_ReturnsFallbackValue()
+        {
+            var expected = "Fallback value";
+            var sut = Option.None<string>();
+
+            var actual = sut.Or(expected);
+
+            actual.ShouldBe(expected);
+        }
     }
 }

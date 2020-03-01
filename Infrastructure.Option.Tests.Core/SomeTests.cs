@@ -127,9 +127,7 @@ namespace Infrastructure.Tests.Core
 
             Option<string> sut = Option.Some(expected);
 
-            static string Unwrap(string some) => some;
-
-            var actual = sut is Some<string> some ? Unwrap(some) : unexpected;
+            var actual = sut is Some<string> some ? some.Value : unexpected;
 
             actual.ShouldBe(expected);
         }
@@ -143,6 +141,38 @@ namespace Infrastructure.Tests.Core
             var actual = sut is None<string> ? true : false;
 
             actual.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void IsSome_True()
+        {
+            var sut = Option.Some("Example value");
+
+            var actual = sut.IsSome();
+
+            actual.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void IsNone_False()
+        {
+            var sut = Option.Some("Example value");
+
+            var actual = sut.IsNone();
+
+            actual.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Or_ReturnsOriginalValue()
+        {
+            var expected = "Original value";
+            var fallback = "Fallback value";            
+            var sut = Option.Some(expected);
+
+            var actual = sut.Or(fallback);
+
+            actual.ShouldBe(expected);
         }
     }
 }

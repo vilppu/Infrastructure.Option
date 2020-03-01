@@ -1,4 +1,7 @@
-﻿namespace Infrastructure
+﻿using System.Linq;
+using System.Collections.Generic;
+
+namespace Infrastructure
 {
     public abstract class Option<T>
     {
@@ -47,7 +50,25 @@
 
     public static class Option
     {
-        public static Some<T> Some<T>(T value) => new Some<T>(value);
-        public static None<T> None<T>() => Infrastructure.None<T>.Instance;
+        public static Some<T> Some<T>(T value) =>
+            new Some<T>(value);
+
+        public static None<T> None<T>() =>
+            Infrastructure.None<T>.Instance;
+
+        public static bool IsSome<T>(this Option<T> option) =>
+            option is Some<T>;
+
+        public static bool IsNone<T>(this Option<T> option) =>
+            option is None<T>;
+
+        public static T Or<T>(this Option<T> option, T fallback) =>
+            option is Some<T> some ? some.Value : fallback;
+    }
+
+    public static class Options
+    {
+        public static IEnumerable<T> Values<T>(this IEnumerable<Option<T>> options) =>
+            options.OfType<Some<T>>().Select(some => some.Value);
     }
 }

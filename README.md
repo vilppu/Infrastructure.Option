@@ -60,7 +60,7 @@ var collection = new Option<string>[]
         Option.Some("5"),
         Option.None<string>(),
     };
-var values = collection.Values();
+var values = collection.Values(); // values is [ "1", "2", "3", "4", "5" ]
 ```
 
 ## Sample console app

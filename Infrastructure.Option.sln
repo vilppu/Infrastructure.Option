@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arado.Option", "Arado.Option\Arado.Option.csproj", "{2E0A31A4-103F-427D-A61D-C6CEEC60877D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Option", "Infrastructure.Option\Infrastructure.Option.csproj", "{2E0A31A4-103F-427D-A61D-C6CEEC60877D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arado.Option.Tests.Core", "Arado.Option.Tests.Core\Arado.Option.Tests.Core.csproj", "{E2623A17-5D22-4F3E-A3A4-AD35230F5EE0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Option.Tests.Core", "Infrastructure.Option.Tests.Core\Infrastructure.Option.Tests.Core.csproj", "{E2623A17-5D22-4F3E-A3A4-AD35230F5EE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arado.Option.Tests.Framework", "Arado.Option.Tests.Framework\Arado.Option.Tests.Framework.csproj", "{C8168A44-87FD-4436-AB3A-BC3437077E11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Option.Tests.Framework", "Infrastructure.Option.Tests.Framework\Infrastructure.Option.Tests.Framework.csproj", "{C8168A44-87FD-4436-AB3A-BC3437077E11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 ﻿using Shouldly;
 using Xunit;
 
-namespace Arado.Option.Tests.Core
+namespace Infrastructure.Tests.Framework
 {
     public class NoneTests
     {

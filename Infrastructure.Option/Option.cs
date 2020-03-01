@@ -1,4 +1,4 @@
-﻿namespace Arado.Option
+﻿namespace Infrastructure
 {
     public abstract class Option<T>
     {
@@ -48,6 +48,6 @@
     public static class Option
     {
         public static Some<T> Some<T>(T value) => new Some<T>(value);
-        public static None<T> None<T>() => Arado.Option.None<T>.Instance;
+        public static None<T> None<T>() => Infrastructure.None<T>.Instance;
     }
 }

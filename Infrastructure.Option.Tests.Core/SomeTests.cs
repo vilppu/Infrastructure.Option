@@ -1,7 +1,7 @@
 using Shouldly;
 using Xunit;
 
-namespace Arado.Option.Tests.Framework
+namespace Infrastructure.Tests.Core
 {
     public class SomeTests
     {
@@ -127,7 +127,9 @@ namespace Arado.Option.Tests.Framework
 
             Option<string> sut = Option.Some(expected);
 
-            var actual = sut is Some<string> some ? some.Value : unexpected;
+            static string Unwrap(string some) => some;
+
+            var actual = sut is Some<string> some ? Unwrap(some) : unexpected;
 
             actual.ShouldBe(expected);
         }

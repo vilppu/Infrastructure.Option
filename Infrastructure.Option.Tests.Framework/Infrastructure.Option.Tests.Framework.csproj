@@ -9,8 +9,8 @@
     <ProjectGuid>{C8168A44-87FD-4436-AB3A-BC3437077E11}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arado.Option.Tests.Framework</RootNamespace>
-    <AssemblyName>Arado.Option.Tests.Framework</AssemblyName>
+    <RootNamespace>Infrastructure.Tests.Framework</RootNamespace>
+    <AssemblyName>Infrastructure.Option.Tests.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -68,9 +68,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arado.Option\Arado.Option.csproj">
+    <ProjectReference Include="..\Infrastructure.Option\Infrastructure.Option.csproj">
       <Project>{2e0a31a4-103f-427d-a61d-c6ceec60877d}</Project>
-      <Name>Arado.Option</Name>
+      <Name>Infrastructure.Option</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,11 @@ namespace Infrastructure
 {
     public abstract class Option<T>
     {
+        public static Some<T> Some(T value) => Option.Some<T>(value);
+
+        public static Option<T> None { get; } = Option.None<T>();
+
+        public static implicit operator Option<T>(T value) => Option.Some<T>(value);
     }
 
     public sealed class Some<T> : Option<T>
@@ -33,6 +38,8 @@ namespace Infrastructure
         }
 
         public override int GetHashCode() => Value.GetHashCode();
+        
+        public override string ToString() => Value.ToString();
     }
 
     public sealed class None<T> : Option<T>
@@ -45,7 +52,9 @@ namespace Infrastructure
 
         public override bool Equals(object obj) => obj is None<T>;
 
-        public override int GetHashCode() => 0;
+        public override int GetHashCode() => GetType().GetHashCode();
+        
+        public override string ToString() => string.Empty;
     }
 
     public static class Option

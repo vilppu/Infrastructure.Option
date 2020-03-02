@@ -46,6 +46,16 @@ namespace Infrastructure.Tests.Core
         }
 
         [Fact]
+        public void ToString_Empty()
+        {
+            var sut = Option.None<string>();
+
+            var actual = sut.ToString();
+
+            actual.ShouldBeEmpty();
+        }
+
+        [Fact]
         public void PatternMath_None_IsMatch()
         {
             Option<string> sut = Option.None<string>();

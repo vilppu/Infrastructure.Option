@@ -70,6 +70,18 @@ namespace Infrastructure.Tests.Core
         }
 
         [Fact]
+        public void ToString_IsValueToString()
+        {
+            const string expected = "Example value";
+
+            var sut = Option.Some(expected);
+
+            var actual = sut.ToString();
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
         public void ImplicitConversionToValue_UnwrapsValue()
         {
             const string expected = "Example value";
@@ -167,7 +179,7 @@ namespace Infrastructure.Tests.Core
         public void Or_ReturnsOriginalValue()
         {
             var expected = "Original value";
-            var fallback = "Fallback value";            
+            var fallback = "Fallback value";
             var sut = Option.Some(expected);
 
             var actual = sut.Or(fallback);

@@ -8,7 +8,7 @@ namespace Infrastructure
         public static Some<T> Some(T value) =>
             new Some<T>(value);
 
-        public static None<T> None { get; } =
+        public static Option<T> None { get; } =
             None<T>.Instance;
 
         public static implicit operator Option<T>(T value) =>

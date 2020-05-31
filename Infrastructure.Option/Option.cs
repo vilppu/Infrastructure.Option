@@ -85,11 +85,17 @@ namespace Infrastructure
 
         public static T Or<T>(this Option<T> option, T fallback) =>
             option is Some<T> some ? some.Value : fallback;
+
+        public static Option<T> Otherwise<T>(this Option<T> option, Option<T> another) =>
+            option is Some<T> some ? some : another;
     }
 
     public static class Options
     {
         public static IEnumerable<T> Values<T>(this IEnumerable<Option<T>> options) =>
             options.OfType<Some<T>>().Select(some => some.Value);
+
+        public static Option<T> FirstSomeOtherwiseNone<T>(this IEnumerable<Option<T>> options) =>
+            options.FirstOrDefault(option => option is Some<T>) ?? Option.None<T>();
     }
 }

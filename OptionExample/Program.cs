@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OptionExample
 {
@@ -9,7 +10,10 @@ namespace OptionExample
         {
             var some = Option.Some("Hello!");
             var none = Option.None<string>();
+            var chosenSome = none.Otherwise(some);
+            var chosenNone = none.Otherwise(none);
             var fallback = none.Or("I am fallback value!");
+            var anotherFallback = none.Otherwise(none).Or("I am another fallback value!");
             var collection = new Option<string>[]
                 {
                     Option.None<string>(),
@@ -23,11 +27,16 @@ namespace OptionExample
                     Option.Some("5"),
                     Option.None<string>(),
                 };
+            var firstSome = collection.FirstSomeOtherwiseNone();
 
             Print(some); // prints "Hello!"
             Print(none); // does nothing
+            Print(chosenSome); // prints "Hello!"
+            Print(chosenNone); // does nothing
             Console.WriteLine(fallback); // prints "I am fallback value!"
-            Console.WriteLine(string.Join("", collection.Values())); // prints 12345
+            Console.WriteLine(anotherFallback); // prints "I am another fallback value!"
+            Console.WriteLine(string.Join("", collection.Values())); // prints !12345"
+            Print(firstSome); // Prints "1"
         }
 
         private static void Print(Option<string> option)

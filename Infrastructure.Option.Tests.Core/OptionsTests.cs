@@ -26,5 +26,40 @@ namespace Infrastructure.Tests.Core
 
             actual.ShouldBe(new[] { "1", "2", "3", "4", "5" });
         }
+
+        [Fact]
+        public void FirstSomeOtherwiseNone_ReturnsFirstSome()
+        {
+            var expected = Option.Some("1");
+            
+            var sut = new Option<string>[]
+            {
+                Option.None<string>(),
+                Option.None<string>(),
+                expected,
+                Option.Some("2")
+            };
+
+            var actual = sut.FirstSomeOtherwiseNone();
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void FirstSomeOtherwiseNone_OnlyNones_ReturnsNone()
+        {
+            var expected = Option.None<string>();
+
+            var sut = new Option<string>[]
+            {
+                Option.None<string>(),
+                Option.None<string>(),
+                Option.None<string>()
+            };
+
+            var actual = sut.FirstSomeOtherwiseNone();
+
+            actual.ShouldBe(expected);
+        }
     }
 }

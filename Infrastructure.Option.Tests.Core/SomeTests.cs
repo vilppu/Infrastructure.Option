@@ -186,5 +186,17 @@ namespace Infrastructure.Tests.Core
 
             actual.ShouldBe(expected);
         }
+
+        [Fact]
+        public void Otherwise_ReturnsOriginalValue()
+        {
+            var expected = Option.Some("Original value");
+            var another = Option.Some("Another value");
+            var sut = expected;
+
+            var actual = sut.Otherwise(another);
+
+            actual.ShouldBe(expected);
+        }
     }
 }

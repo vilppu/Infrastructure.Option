@@ -44,6 +44,23 @@ Option<string> option = Option.None<string>();
 var fallback = option.Or("Fallback value");
 ```
 
+```
+Option<string> option = Option.None<string>();
+Option<string> anotherOption = Option.Some("Example value");
+var fallback = option.Otherwise(anotherOption);
+```
+
+## Choosing first some value from many options
+
+```
+var options = new Option<string>[] {
+    Option.None<string>,
+    Option.Some("Example value")
+};
+
+var option = options.FirstSomeOtherwiseNone();
+```
+
 ## Mapping collection values
 
 ```

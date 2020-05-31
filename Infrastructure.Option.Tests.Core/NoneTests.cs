@@ -95,5 +95,27 @@ namespace Infrastructure.Tests.Core
 
             actual.ShouldBe(expected);
         }
+
+        [Fact]
+        public void Otherwise_AnotherIsSome_ReturnsFallbackValue()
+        {
+            var expected = Option.Some("Another value");
+            var sut = Option.None<string>();
+
+            var actual = sut.Otherwise(expected);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Otherwise_AnotherIsNone_ReturnsNone()
+        {
+            var expected = Option.None<string>();
+            var sut = Option.None<string>();
+
+            var actual = sut.Otherwise(expected);
+
+            actual.ShouldBe(expected);
+        }
     }
 }

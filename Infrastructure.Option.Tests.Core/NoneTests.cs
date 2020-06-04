@@ -86,7 +86,7 @@ namespace Infrastructure.Tests.Core
         }
 
         [Fact]
-        public void Or_ReturnsFallbackValue()
+        public void Or_WithValueFallback_ReturnsFallbackValue()
         {
             var expected = "Fallback value";
             var sut = Option.None<string>();
@@ -97,12 +97,34 @@ namespace Infrastructure.Tests.Core
         }
 
         [Fact]
-        public void Otherwise_AnotherIsSome_ReturnsFallbackValue()
+        public void Otherwise_WithValueAnother_AnotherIsSome_ReturnsAnother()
         {
             var expected = Option.Some("Another value");
             var sut = Option.None<string>();
 
             var actual = sut.Otherwise(expected);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Or_WithLambdaFallback_ReturnsFallbackResult()
+        {
+            var expected = "Fallback value";
+            var sut = Option.None<string>();
+
+            var actual = sut.Or(() => expected);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Otherwise_WithLambdaAnother_AnotherResultIsSome_ReturnsResult()
+        {
+            var expected = Option.Some("Another value");
+            var sut = Option.None<string>();
+
+            var actual = sut.Otherwise(() => expected);
 
             actual.ShouldBe(expected);
         }
@@ -114,6 +136,17 @@ namespace Infrastructure.Tests.Core
             var sut = Option.None<string>();
 
             var actual = sut.Otherwise(expected);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Otherwise_WithLambdaAnother_AnotherReturnsNone_ReturnsNone()
+        {
+            var expected = Option.None<string>();
+            var sut = Option.None<string>();
+
+            var actual = sut.Otherwise(() => expected);
 
             actual.ShouldBe(expected);
         }

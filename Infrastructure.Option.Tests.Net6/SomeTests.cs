@@ -176,7 +176,7 @@ namespace Infrastructure.Tests.Core
         }
 
         [Fact]
-        public void Or_ReturnsOriginalValue()
+        public void Or_WithValueFallback_ReturnsOriginalValue()
         {
             var expected = "Original value";
             var fallback = "Fallback value";
@@ -188,7 +188,30 @@ namespace Infrastructure.Tests.Core
         }
 
         [Fact]
-        public void Otherwise_ReturnsOriginalValue()
+        public void Or_WithLambdaFallback_ReturnsOriginalValue()
+        {
+            var expected = "Original value";
+            var fallback = "Fallback value";
+            var sut = Option.Some(expected);
+
+            var actual = sut.Or(() => fallback);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Or_WithLambdaFallback_FallbackIsNotInvoked()
+        {
+            var fallbackInvoked = false;
+            var sut = Option.Some("Original value");
+
+            var _ = sut.Or(() => { fallbackInvoked = true; return "Fallback value"; });
+
+            fallbackInvoked.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Otherwise_WithValueAnother_ReturnsOriginalValue()
         {
             var expected = Option.Some("Original value");
             var another = Option.Some("Another value");
@@ -197,6 +220,29 @@ namespace Infrastructure.Tests.Core
             var actual = sut.Otherwise(another);
 
             actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Oyherwise_WithLambdaAnother_ReturnsOriginalValue()
+        {
+            var expected = Option.Some("Original value");
+            var another = Option.Some("Another value");
+            var sut = expected;
+
+            var actual = sut.Otherwise(() => another);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Otherwise_WithLambdaAnother_FallbackIsNotInvoked()
+        {
+            var fallbackInvoked = false;
+            var sut = Option.Some("Original value");
+
+            var _ = sut.Otherwise(() => { fallbackInvoked = true; return Option.Some("Fallback value"); });
+
+            fallbackInvoked.ShouldBeFalse();
         }
     }
 }

@@ -217,19 +217,19 @@ namespace Infrastructure.Tests.Core
             var another = Option.Some("Another value");
             var sut = expected;
 
-            var actual = sut.Otherwise(another);
+            var actual = sut.Otherwise((Option<string>)another);
 
             actual.ShouldBe(expected);
         }
 
         [Fact]
-        public void Oyherwise_WithLambdaAnother_ReturnsOriginalValue()
+        public void Otherwise_WithLambdaAnother_ReturnsOriginalValue()
         {
             var expected = Option.Some("Original value");
             var another = Option.Some("Another value");
             var sut = expected;
 
-            var actual = sut.Otherwise(() => another);
+            var actual = sut.Otherwise((System.Func<Option<string>>)(() => another));
 
             actual.ShouldBe(expected);
         }
@@ -240,9 +240,29 @@ namespace Infrastructure.Tests.Core
             var fallbackInvoked = false;
             var sut = Option.Some("Original value");
 
-            var _ = sut.Otherwise(() => { fallbackInvoked = true; return Option.Some("Fallback value"); });
+            var _ = sut.Otherwise((System.Func<Option<string>>)(() => { fallbackInvoked = true; return Option.Some("Fallback value"); }));
 
             fallbackInvoked.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Otherwise_ReturnsOriginal()
+        {
+            var sut = Option.Some("Original value");
+
+            var actual = sut.Otherwise("Another value");
+
+            actual.ShouldBe("Original value");
+        }
+
+        [Fact]
+        public void OtherwiseWithLambda_ReturnsOriginal()
+        {
+            var sut = Option.Some("Original value");
+
+            var actual = sut.Otherwise(() => "Another value");
+
+            actual.ShouldBe("Original value");
         }
     }
 }

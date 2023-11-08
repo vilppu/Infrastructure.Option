@@ -10,7 +10,7 @@ namespace OptionExample
         {
             var some = Option.Some("Hello!");
             var none = Option.None<string>();
-            var chosenSome = none.Otherwise(some);
+            var chosenSome = none.Otherwise((Option<string>)some);
             var chosenNone = none.Otherwise(none);
             var fallback = none.Or("I am fallback value!");
             var anotherFallback = none.Otherwise(none).Or("I am another fallback value!");

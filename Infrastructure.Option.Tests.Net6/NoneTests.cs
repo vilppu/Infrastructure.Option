@@ -102,7 +102,29 @@ namespace Infrastructure.Tests.Core
             var expected = Option.Some("Another value");
             var sut = Option.None<string>();
 
+            var actual = sut.Otherwise((Option<string>)expected);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Otherwise_ReturnsAnother()
+        {
+            var expected = "Another value";
+            var sut = Option.None<string>();
+
             var actual = sut.Otherwise(expected);
+
+            actual.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void OtherwiseWithLambda_ReturnsAnother()
+        {
+            var expected = "Another value";
+            var sut = Option.None<string>();
+
+            var actual = sut.Otherwise(() => expected);
 
             actual.ShouldBe(expected);
         }
@@ -124,7 +146,7 @@ namespace Infrastructure.Tests.Core
             var expected = Option.Some("Another value");
             var sut = Option.None<string>();
 
-            var actual = sut.Otherwise(() => expected);
+            var actual = sut.Otherwise((System.Func<Option<string>>)(() => expected));
 
             actual.ShouldBe(expected);
         }

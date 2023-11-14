@@ -1,4 +1,4 @@
-[![Build Status](https://vilppu.visualstudio.com/Infrastructure.Option/_apis/build/status/vilppu.Infrastructure.Option?branchName=master)](https://vilppu.visualstudio.com/Infrastructure.Option/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://vilppu.visualstudio.com/Infrastructure.Option/_apis/build/status/vilppu.Infrastructure.Option?branchName=main)](https://vilppu.visualstudio.com/Infrastructure.Option/_build/latest?definitionId=1&branchName=main)
 
 # Usage
 

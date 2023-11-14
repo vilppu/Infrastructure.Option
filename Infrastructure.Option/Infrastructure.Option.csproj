@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>Infrastructure.Option</PackageId>
-    <Version>6.0.0</Version>    
+    <Version>6.0.3</Version>    
     <Description>Option type usable with C#</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/vilppu/Infrastructure.Option</PackageProjectUrl>

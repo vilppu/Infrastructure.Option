@@ -65,12 +65,6 @@ namespace Infrastructure
         public static Option<T> Otherwise<T>(this Option<T> option, Func<Option<T>> another) =>
             option is Some<T> some ? some : another();
 
-        public static T Otherwise<T>(this Option<T> option, T another) =>
-            option is Some<T> some ? some.Value : another;
-
-        public static T Otherwise<T>(this Option<T> option, Func<T> another) =>
-            option is Some<T> some ? some.Value : another();
-
         public static T? OrNull<T>(this Option<T> option) where T : class =>
             option is Some<T> some ? some.Value : null;
     }

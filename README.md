@@ -12,6 +12,8 @@ Get nuget https://www.nuget.org/packages/Infrastructure.Option/
 
 `Option` is a static class that can be used to create `Option<T>` instances.
 
+`Option<T>` is serialized as a singleton or empty array. In JSON `Option.Some<T>` is presented as a singleton array `[value]` and `Option.None<T>` is presented as an empty array `[]`.
+
 For more information about option types see https://en.wikipedia.org/wiki/Option_type
 
 # Examples

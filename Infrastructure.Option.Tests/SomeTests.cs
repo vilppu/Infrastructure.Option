@@ -93,7 +93,7 @@ public class SomeTests
 
     [Fact]
     public void Option_does_not_fallback_to_option_lambda_when_value_exists() =>
-        Option.Some("Original value").Otherwise((System.Func<Option<string>>)(() => Option.Some("Another value"))).ShouldBe(Option.Some("Original value"));
+        Option.Some("Original value").Or((System.Func<Option<string>>)(() => Option.Some("Another value"))).ShouldBe(Option.Some("Original value"));
 
     [Fact]
     public void Fallback_option_factory_is_not_invoked_when_value_exists()
@@ -101,7 +101,7 @@ public class SomeTests
         var fallbackInvoked = false;
         var sut = Option.Some("Original value");
 
-        _ = sut.Otherwise((System.Func<Option<string>>)(() =>
+        _ = sut.Or((System.Func<Option<string>>)(() =>
         {
             fallbackInvoked = true;
             return Option.Some("Fallback value");

@@ -15,7 +15,7 @@ public abstract record Option<T>
     /// <summary>
     /// Indicator intended for serializers to deduce if is value is <see cref="Some">something</see> or <see cref="None">nothing</see>.
     /// </summary>
-    public abstract bool IsSome { get; }
+    public abstract T? ValueOrNull { get; }
 
     /// <summary>
     /// Value wrapped as an optional.
@@ -51,7 +51,7 @@ public sealed record Some<T>(T Value) : Option<T>
     public static implicit operator Some<T>(T value) =>
         new(value);
 
-    public override bool IsSome => true;
+    public override T ValueOrNull => Value;
 
     public override string ToString() =>
         Value!.ToString()!;
@@ -71,7 +71,7 @@ public sealed record None<T> : Option<T>
     public static None<T> Instance =>
         new();
 
-    public override bool IsSome => true;
+    public override T? ValueOrNull => default;
 
     public override string ToString() =>
         string.Empty;
@@ -110,7 +110,7 @@ public static class Option
         option.Or(another);
 
     public static T? OrNull<T>(this Option<T> option) where T : class =>
-        option is Some<T> some ? some.Value : null;
+        option.ValueOrNull;
 }
 
 public static class OptionCollection

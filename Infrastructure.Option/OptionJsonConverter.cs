@@ -51,18 +51,22 @@ public class OptionJsonConverter<T> : JsonConverter<Option<T>>, IGenericOptionJs
          typeToConvert.GetGenericTypeDefinition() == typeof(None<>));
 
     public override Option<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-        JsonSerializer.Deserialize<T[]>(ref reader, options) switch
+        JsonSerializer.Deserialize<SerializedOption<T>>(ref reader, options) switch
         {
-        [var some] => Option<T>.Some(some),
-            _ => Option.None<T>()
+            { ValueOrDefault: {} value } => Option<T>.Some(value),
+            _ => Option<T>.None
         };
 
     public override void Write(Utf8JsonWriter writer, Option<T> value, JsonSerializerOptions options) =>
-        JsonSerializer.Serialize<T[]>(writer, value is Some<T> some ? [some] : [], options);
+        JsonSerializer.Serialize(writer, new SerializedOption<T>(value.ValueOrNull), options);
 
     public object ReadObject(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
         Read(ref reader, typeToConvert, options);
 
     public void WriteObject(Utf8JsonWriter writer, object value, JsonSerializerOptions options) =>
         Write(writer, (Option<T>)value, options);
+}
+
+public record SerializedOption<T>(T? ValueOrDefault)
+{
 }

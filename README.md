@@ -6,15 +6,24 @@ Get nuget https://www.nuget.org/packages/Infrastructure.Option/
 
 # Overview
 
-`Option<T>` is a simple option type usable with C#
+`Option<T>` is a simple option type usable in C#.
 
-`Option.Some<T>` represents an available value and `Option.None<T>` is non-available value.
+- `Option.Some<T>` represents an available value.
+- `Option.None<T>` represents the absence of a value.
 
-`Option` is a static class that can be used to create `Option<T>` instances.
+The `Option` static class provides factory methods to create instances of `Option<T>`.
 
-`Option<T>` is serialized as a singleton or empty array. In JSON `Option.Some<T>` is presented as a singleton array `[value]` and `Option.None<T>` is presented as an empty array `[]`.
+For more information about option types, see [Option type on Wikipedia](https://en.wikipedia.org/wiki/Option_type).
 
-For more information about option types see https://en.wikipedia.org/wiki/Option_type
+# JSON Serialization
+
+`Infrastructure.Option` supports JSON serialization using `System.Text.Json` without requiring any additional dependencies.
+
+The `Option<T>` type is serialized as an object with a single `ValueOrNull` property that contains the wrapped value.
+
+This approach produces idiomatic JSON for both .NET and the broader JSON ecosystem, and the optional value is clearly described in OpenAPI documentation.
+
+For example, `Option.Some("Hello!")` is serialized as `{ "ValueOrNull": "Hello!" }`.
 
 # Examples
 
@@ -36,36 +45,49 @@ var noneInteger = Option.None<int>();
 
 ```
 var option = Option.Some("Example value");
-var value = option is Some<string> some ? some.Value : "Someting else";
+var value = option is Some<string> some ? some.Value : "Something else";
 ```
 
 ## Fallback values using fluent syntax
 
+## Note that `Or`and `Otherwise` can be used interchangeably which ever fits the context better.
+
 ```
-Option<string> option = Option.None<string>();
-var fallback = option.Or("Fallback value");
-var anotherFallback = option.Or(() => "Fallback expression")
+var option = Option.None<string>();
+var optionalFallbackValue = Option.Some("Example value");
+var fallbackValue = Option.Some("Example value");
+
+var fallbackToOptionalValue = option.Or(optionalFallbackValue);
+var fallbackToValue = option.Or(fallbackValue);
+
+var fallbackToOptionalValueProvidedByValueFactory = option.Or(() => optionalFallbackValue);
+var fallbackToValueProvidedByValueFactory = option.Or(() => fallbackValue);
 ```
 
 ```
-Option<string> option = Option.None<string>();
-Option<string> anotherOption = Option.Some("Example value");
-var fallback = option.Otherwise(anotherOption);
-var anotherFallback = option.Otherwise(() => anotherOption);
+var option = Option.None<string>();
+var optionalFallbackValue = Option.Some("Example value");
+var fallbackValue = Option.Some("Example value");
+
+var fallbackToOptionalValue = option.Otherwise(optionalFallbackValue);
+var fallbackToValue = option.Otherwise(fallbackValue);
+
+var fallbackToOptionalValueProvidedByValueFactory = option.Otherwise(() => optionalFallbackValue);
+var fallbackToValueProvidedByValueFactory = option.Otherwise(() => fallbackValue);
 ```
 
-## Choosing first some value from many options
+## Choosing first value from many options
 
 ```
-var options = new Option<string>[] {
-    Option.None<string>,
+var options = new[] {
+    Option.None<string>(),
     Option.Some("Example value")
 };
 
-var option = options.FirstSomeOtherwiseNone();
+var option = options.FirstOrNone();
 ```
 
-## Mapping collection values
+## Choosing existing values from collection
 
 ```
 var collection = new Option<string>[]

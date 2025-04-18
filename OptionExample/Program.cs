@@ -5,14 +5,8 @@ namespace OptionExample;
 
 class Program
 {
-    static void Main()
+    public static void Main()
     {
-        var some = Option.Some("Hello!");
-        var none = Option.None<string>();
-        var chosenSome = none.Otherwise(some);
-        var chosenNone = none.Or(none);
-        var fallback = none.Or("I am fallback value!");
-        var anotherFallback = none.Or(none).Or("I am another fallback value!");
         var options = new[]
         {
             Option.None<string>(),
@@ -26,6 +20,7 @@ class Program
             Option.Some("5"),
             Option.None<string>(),
         };
+
         var values = new[]
         {
             "1",
@@ -34,24 +29,19 @@ class Program
             "4",
             "5",
         };
-        var firstSome = options.FirstOrNone();
-        var firstMatch = values.FirstOrNone(value => value == "4");
-        var singleMatch = values.SingleOrNone(value => value == "5");
-        var noMatch = values.FirstOrNone(value => value == "6");
-        var noSingleMatch = values.SingleOrNone(value => value == "6");
 
-        Print(some); // prints "Hello!"
-        Print(none); // does nothing
-        Print(chosenSome); // prints "Hello!"
-        Print(chosenNone); // does nothing
-        Console.WriteLine(fallback); // prints "I am fallback value!"
-        Console.WriteLine(anotherFallback); // prints "I am another fallback value!"
+        Print(Option.Some("Hello!")); // prints "Hello!"
+        Print(Option.None<string>()); // does nothing
+        Print(Option.None<string>().Otherwise(Option.Some("Hello!"))); // prints "Hello!"
+        Print(Option.None<string>().Or(Option.None<string>())); // does nothing
+        Console.WriteLine(Option.None<string>().Or("I am fallback value!")); // prints "I am fallback value!"
+        Console.WriteLine(Option.None<string>().Or(Option.None<string>()).Or("I am another fallback value!")); // prints "I am another fallback value!"
         Console.WriteLine(string.Join("", options.Values())); // prints !12345"
-        Print(firstSome); // prints "1"
-        Print(firstMatch); // prints "4"
-        Print(singleMatch); // prints "5"
-        Print(noMatch); // does nothing
-        Print(noSingleMatch); // does nothing
+        Print(options.FirstOrNone()); // prints "1"
+        Print(values.FirstOrNone(value => value == "4")); // prints "4"
+        Print(values.SingleOrNone(value => value == "5")); // prints "5"
+        Print(values.FirstOrNone(value => value == "6")); // does nothing
+        Print(values.SingleOrNone(value => value == "6")); // does nothing
     }
 
     private static void Print(Option<string> option)

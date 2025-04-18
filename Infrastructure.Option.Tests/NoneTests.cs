@@ -60,11 +60,11 @@ public class NoneTests
 
     [Fact]
     public void None_falls_back_to_given_none() => 
-        Option.None<string>().Otherwise(Option.None<string>()).ShouldBe(Option.None<string>());
+        Option.None<string>().Or(Option.None<string>()).ShouldBe(Option.None<string>());
 
     [Fact]
     public void None_falls_back_to_given_none_lambda() => 
-        Option.None<string>().Otherwise(Option.None<string>).ShouldBe(Option.None<string>());
+        Option.None<string>().Or(Option.None<string>).ShouldBe(Option.None<string>());
 
     [Fact]
     public void Default_to_given_fallback_value() =>

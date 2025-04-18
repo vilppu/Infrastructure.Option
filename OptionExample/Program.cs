@@ -10,9 +10,9 @@ class Program
         var some = Option.Some("Hello!");
         var none = Option.None<string>();
         var chosenSome = none.Otherwise(some);
-        var chosenNone = none.Otherwise(none);
+        var chosenNone = none.Or(none);
         var fallback = none.Or("I am fallback value!");
-        var anotherFallback = none.Otherwise(none).Or("I am another fallback value!");
+        var anotherFallback = none.Or(none).Or("I am another fallback value!");
         var options = new[]
         {
             Option.None<string>(),

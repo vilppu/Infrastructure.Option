@@ -10,7 +10,7 @@ public class ObjectJsonSerializationTests
     private record struct ExampleValueType(string ExampleProperty);
 
     [Fact]
-    public void None_is_serialized_as_wrapped_null()
+    public void None_reference_type_is_serialized_as_wrapped_null()
     {
         var sut = Option.None<string>();
 
@@ -18,6 +18,17 @@ public class ObjectJsonSerializationTests
         var deserialized = JsonSerializer.Deserialize<Option<string>>(serialized);
 
         deserialized.ShouldBe(Option.None<string>());
+    }
+
+    [Fact]
+    public void None_value_type_is_serialized_as_wrapped_null()
+    {
+        var sut = Option.None<int>();
+
+        var serialized = JsonSerializer.Serialize(sut);
+        var deserialized = JsonSerializer.Deserialize<Option<int>>(serialized);
+
+        deserialized.ShouldBe(Option.None<int>());
     }
 
     [Fact]

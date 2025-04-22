@@ -107,7 +107,7 @@ var values = collection.Choose(); // is [ "1", "2", "3" ]
 ```
 record ExampleType(string ExampleProperty);
 
-var options = new[] {
+var collection = new[] {
         Option.None<ExampleType>(),
         Option.Some(new ExampleType("1")),
         Option.None<ExampleType>(),
@@ -117,5 +117,5 @@ var options = new[] {
         Option.None<ExampleType>(),
 };
 
-var values = collection.Choose(); // is [ "1", "2", "3" ]
+var propertyValues = collection.Choose(entry => entry.ExampleProperty); // is [ "1", "2", "3" ]
 ```

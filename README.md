@@ -95,13 +95,27 @@ var collection = new Option<string>[]
         Option.None<string>(),
         Option.Some("1"),
         Option.None<string>(),
-        Option.None<string>(),
         Option.Some("2"),
-        Option.Some("3"),
-        Option.Some("4"),
         Option.None<string>(),
-        Option.Some("5"),
+        Option.Some("3"),
         Option.None<string>(),
     };
-var values = collection.Values(); // values is [ "1", "2", "3", "4", "5" ]
+var values = collection.Choose(); // is [ "1", "2", "3" ]
+```
+## Choosing property values
+
+```
+record ExampleType(string ExampleProperty);
+
+var options = new[] {
+        Option.None<ExampleType>(),
+        Option.Some(new ExampleType("1")),
+        Option.None<ExampleType>(),
+        Option.Some(new ExampleType("2")),
+        Option.None<ExampleType>(),
+        Option.Some(new ExampleType("3")),
+        Option.None<ExampleType>(),
+};
+
+var values = collection.Choose(); // is [ "1", "2", "3" ]
 ```

@@ -36,14 +36,27 @@ class Program
         Print(Option.None<string>().Or(Option.None<string>())); // does nothing
         Console.WriteLine(Option.None<string>().Or("I am fallback value!")); // prints "I am fallback value!"
         Console.WriteLine(Option.None<string>().Or(Option.None<string>()).Or("I am another fallback value!")); // prints "I am another fallback value!"
-        Console.WriteLine(string.Join("", options.Values())); // prints !12345"
+        Console.WriteLine(string.Join("", options.Choose())); // prints "12345"
         Print(options.FirstOrNone()); // prints "1"
         Print(values.FirstOrNone(value => value == "4")); // prints "4"
         Print(values.SingleOrNone(value => value == "5")); // prints "5"
         Print(values.FirstOrNone(value => value == "6")); // does nothing
         Print(values.SingleOrNone(value => value == "6")); // does nothing
-    }
 
+
+        var examples = new[] {
+            Option.None<ExampleType>(),
+            Option.Some(new ExampleType("1")),
+            Option.None<ExampleType>(),
+            Option.Some(new ExampleType("2")),
+            Option.None<ExampleType>(),
+            Option.Some(new ExampleType("3")),
+            Option.None<ExampleType>(),
+        };
+
+        Print("[" + string.Join(", ", examples.Choose(entry => entry.ExampleProperty)) + "]"); // [ 1, 2, 3 ]
+    }
+    
     private static void Print(Option<string> option)
     {
         if (option is Some<string> some)
@@ -52,3 +65,5 @@ class Program
         }
     }
 }
+
+record ExampleType(string ExampleProperty);

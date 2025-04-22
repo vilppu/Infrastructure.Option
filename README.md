@@ -15,15 +15,11 @@ The `Option` static class provides factory methods to create instances of `Optio
 
 For more information about option types, see [Option type on Wikipedia](https://en.wikipedia.org/wiki/Option_type).
 
-# JSON Serialization
+Basic manipulation of `Option` is done via `Choose()` and `Otherwise()` functions.
 
-`Infrastructure.Option` supports JSON serialization using `System.Text.Json` without requiring any additional dependencies.
+`Choose()` functions choose the underlying values i.e. something of type `Some<T>`.
 
-The `Option<T>` type is serialized as an object with a single `ValueOrNull` property that contains the wrapped value.
-
-This approach produces idiomatic JSON for both .NET and the broader JSON ecosystem, and the optional value is clearly described in OpenAPI documentation.
-
-For example, `Option.Some("Hello!")` is serialized as `{ "ValueOrNull": "Hello!" }`.
+`Otherwise()` functions are used to defined fallback when `None<T>` are encountered.
 
 # Examples
 
@@ -50,20 +46,6 @@ var value = option is Some<string> some ? some.Value : "Something else";
 
 ## Fallback values using fluent syntax
 
-## Note that `Or`and `Otherwise` can be used interchangeably which ever fits the context better.
-
-```
-var option = Option.None<string>();
-var optionalFallbackValue = Option.Some("Example value");
-var fallbackValue = Option.Some("Example value");
-
-var fallbackToOptionalValue = option.Or(optionalFallbackValue);
-var fallbackToValue = option.Or(fallbackValue);
-
-var fallbackToOptionalValueProvidedByValueFactory = option.Or(() => optionalFallbackValue);
-var fallbackToValueProvidedByValueFactory = option.Or(() => fallbackValue);
-```
-
 ```
 var option = Option.None<string>();
 var optionalFallbackValue = Option.Some("Example value");
@@ -84,7 +66,7 @@ var options = new[] {
     Option.Some("Example value")
 };
 
-var option = options.FirstOrNone();
+var option = options.ChooseFirst();
 ```
 
 ## Choosing existing values from collection
@@ -102,7 +84,7 @@ var collection = new Option<string>[]
     };
 var values = collection.Choose(); // is [ "1", "2", "3" ]
 ```
-## Choosing property values
+## Choosing values with mapping
 
 ```
 record ExampleType(string ExampleProperty);
@@ -119,3 +101,13 @@ var collection = new[] {
 
 var propertyValues = collection.Choose(entry => entry.ExampleProperty); // is [ "1", "2", "3" ]
 ```
+
+# JSON Serialization
+
+`Infrastructure.Option` supports JSON serialization using `System.Text.Json` without requiring any additional dependencies.
+
+The `Option<T>` type is serialized as an object with a single `ValueOrNull` property that contains the wrapped value.
+
+This approach produces idiomatic JSON for both .NET and the broader JSON ecosystem, and the optional value is clearly described in OpenAPI documentation.
+
+For example, `Option.Some("Hello!")` is serialized as `{ "ValueOrNull": "Hello!" }`.

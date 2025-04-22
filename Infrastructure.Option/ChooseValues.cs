@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Infrastructure;
+
+public static class ChooseValues
+{
+    /// <summary>
+    /// Choose underlying value and apply mapping.
+    /// </summary>
+    public static Option<TResult> Choose<TValue, TResult>(this Option<TValue> option, Func<TValue, TResult> mapping) =>
+        option switch
+        {
+            Some<TValue> some => mapping(some),
+            _ => Option<TResult>.None
+        };
+
+    /// <summary>
+    /// Choose underlying values.
+    /// </summary>
+    public static IEnumerable<TValue> Choose<TValue>(this IEnumerable<Option<TValue>> options) =>
+        options.OfType<Some<TValue>>().Select(some => some.Value);
+
+    /// <summary>
+    /// Choose underlying values matching the filter.
+    /// </summary>
+    public static IEnumerable<TValue> Choose<TValue>(this IEnumerable<Option<TValue>> options, Func<TValue, bool> filter) =>
+        options.Choose().Where(filter);
+
+    /// <summary>
+    /// Choose underlying values and apply mapping to those.
+    /// </summary>
+    public static IEnumerable<TResult> Choose<TValue, TResult>(this IEnumerable<Option<TValue>> options, Func<TValue, TResult> mapping) =>
+        options.OfType<Some<TValue>>().Select(some => mapping(some));
+
+    /// <summary>
+    /// Choose first underlying value.
+    /// </summary>
+    /// <returns>First underlying value or <see cref="None{TValue}"/>> no values exist.</returns>
+    public static Option<TValue> ChooseFirst<TValue>(this IEnumerable<Option<TValue>> options) =>
+        options.OfType<Some<TValue>>().DefaultIfEmpty(Option.None<TValue>()).First();
+
+    /// <summary>
+    /// Choose single underlying value.
+    /// </summary>
+    /// <returns>Single underlying value or <see cref="None{TValue}"/>> no values exist.</returns>
+    /// <remarks>Throws an <see cref="InvalidOperationException"/> if more than one value exists.</remarks>
+    public static Option<TValue> ChooseSingle<TValue>(this IEnumerable<Option<TValue>> options) =>
+        options.OfType<Some<TValue>>().DefaultIfEmpty(Option.None<TValue>()).Single();
+
+    /// <summary>
+    /// Choose first underlying value matching the filter.
+    /// </summary>
+    /// <returns>First underlying value matching the filter or <see cref="None{TValue}"/>> no values exist.</returns>
+    public static Option<TValue> ChooseFirst<TValue>(this IEnumerable<Option<TValue>> options, Func<TValue, bool> filter) =>
+        options.Choose().Where(filter).Select(Option<TValue>.Some).DefaultIfEmpty(Option.None<TValue>()).First();
+
+    /// <summary>
+    /// Choose single underlying value matching the filter.
+    /// </summary>
+    /// <returns>Single underlying value matching the filter or <see cref="None{TValue}"/>> no values exist.</returns>
+    /// <remarks>Throws an <see cref="InvalidOperationException"/> if more than one value matching the filter exists.</remarks>
+    public static Option<TValue> ChooseSingle<TValue>(this IEnumerable<Option<TValue>> options, Func<TValue, bool> filter) =>
+        options.Choose().Where(filter).Select(Option<TValue>.Some).DefaultIfEmpty(Option.None<TValue>()).Single();
+}

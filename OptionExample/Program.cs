@@ -21,27 +21,18 @@ class Program
             Option.None<string>(),
         };
 
-        var values = new[]
-        {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-        };
-
-        Print(Option.Some("Hello!")); // prints "Hello!"
-        Print(Option.None<string>()); // does nothing
-        Print(Option.None<string>().Otherwise(Option.Some("Hello!"))); // prints "Hello!"
-        Print(Option.None<string>().Or(Option.None<string>())); // does nothing
-        Console.WriteLine(Option.None<string>().Or("I am fallback value!")); // prints "I am fallback value!"
-        Console.WriteLine(Option.None<string>().Or(Option.None<string>()).Or("I am another fallback value!")); // prints "I am another fallback value!"
+        Console.WriteLine((Option<string>)Option.Some("Hello!")); // prints "Hello!"
+        Console.WriteLine(Option.None<string>()); // prints ""
+        Console.WriteLine((Option<string>)Option.None<string>().Otherwise(Option.Some("Hello!"))); // prints "Hello!"
+        Console.WriteLine(Option.None<string>().Otherwise(Option.None<string>())); // prints ""
+        Console.WriteLine(Option.None<string>().Otherwise("I am fallback value!")); // prints "I am fallback value!"
+        Console.WriteLine(Option.None<string>().Otherwise(Option.None<string>()).Otherwise("I am another fallback value!")); // prints "I am another fallback value!"
         Console.WriteLine(string.Join("", options.Choose())); // prints "12345"
-        Print(options.FirstOrNone()); // prints "1"
-        Print(values.FirstOrNone(value => value == "4")); // prints "4"
-        Print(values.SingleOrNone(value => value == "5")); // prints "5"
-        Print(values.FirstOrNone(value => value == "6")); // does nothing
-        Print(values.SingleOrNone(value => value == "6")); // does nothing
+        Console.WriteLine(options.ChooseFirst()); // prints "1"
+        Console.WriteLine(options.ChooseFirst(value => value == "4")); // prints "4"
+        Console.WriteLine(options.ChooseSingle(value => value == "5")); // prints "5"
+        Console.WriteLine(options.ChooseFirst(value => value == "6")); // prints ""
+        Console.WriteLine(options.ChooseSingle(value => value == "6")); // prints ""
 
 
         var examples = new[] {
@@ -54,15 +45,7 @@ class Program
             Option.None<ExampleType>(),
         };
 
-        Print("[" + string.Join(", ", examples.Choose(entry => entry.ExampleProperty)) + "]"); // [ 1, 2, 3 ]
-    }
-    
-    private static void Print(Option<string> option)
-    {
-        if (option is Some<string> some)
-        {
-            Console.WriteLine(some);
-        }
+        Console.WriteLine((Option<string>)("[" + string.Join(", ", examples.Choose(entry => entry.ExampleProperty)) + "]")); // [ 1, 2, 3 ]
     }
 }
 

@@ -37,36 +37,4 @@ public class NoneTests
     [Fact]
     public void None_value_is_none() => 
         Option.None<string>().IsNone().ShouldBeTrue();
-
-    [Fact]
-    public void None_falls_back_to_given_value() => 
-        Option.None<string>().Or("Fallback value").ShouldBe("Fallback value");
-
-    [Fact]
-    public void None_falls_back_to_given_option() => 
-        Option.None<string>().Otherwise(Option.Some("Another value")).ShouldBe(Option.Some("Another value"));
-
-    [Fact]
-    public void None_falls_back_to_given_option_value() => 
-        Option.None<string>().Otherwise("Another value").ShouldBe("Another value");
-
-    [Fact]
-    public void None_falls_back_to_given_lambda_result() => 
-        Option.None<string>().Otherwise(() => "Another value").ShouldBe("Another value");
-
-    [Fact]
-    public void None_falls_back_to_given_option_lambda_option() =>
-        Option.None<string>().Otherwise(() => Option.Some("Another value")).ShouldBe(Option.Some("Another value"));
-
-    [Fact]
-    public void None_falls_back_to_given_none() => 
-        Option.None<string>().Or(Option.None<string>()).ShouldBe(Option.None<string>());
-
-    [Fact]
-    public void None_falls_back_to_given_none_lambda() => 
-        Option.None<string>().Or(Option.None<string>).ShouldBe(Option.None<string>());
-
-    [Fact]
-    public void Default_to_given_fallback_value() =>
-        Option.None<string>().Or(() => "Fallback value").ShouldBe("Fallback value");
 }

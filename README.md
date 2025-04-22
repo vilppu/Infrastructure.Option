@@ -1,8 +1,6 @@
-[![Build Status](https://vilppu.visualstudio.com/Infrastructure.Option/_apis/build/status/vilppu.Infrastructure.Option?branchName=main)](https://vilppu.visualstudio.com/Infrastructure.Option/_build/latest?definitionId=1&branchName=main)
-
 # Usage
 
-Get nuget https://www.nuget.org/packages/Infrastructure.Option/
+Get the NuGet package here: [Infrastructure.Option on NuGet](https://www.nuget.org/packages/Infrastructure.Option/)
 
 # Overview
 
@@ -15,38 +13,37 @@ The `Option` static class provides factory methods to create instances of `Optio
 
 For more information about option types, see [Option type on Wikipedia](https://en.wikipedia.org/wiki/Option_type).
 
-Basic manipulation of `Option` is done via `Choose()` and `Otherwise()` functions.
+Basic manipulation of `Option` is done via the `Choose()` and `Otherwise()` functions.
 
-`Choose()` functions choose the underlying values i.e. something of type `Some<T>`.
-
-`Otherwise()` functions are used to defined fallback when `None<T>` are encountered.
+- `Choose()` selects the underlying values, i.e., those of type `Some<T>`.
+- `Otherwise()` defines fallback behavior when encountering `None<T>`.
 
 # Examples
 
-## Creating some values
+## Creating `Some` values
 
-```
+```csharp
 var someString = Option.Some("Example value");
 var someInteger = Option.Some(12345);
 ```
 
-## Creating none values
+## Creating `None` values
 
-```
+```csharp
 var noneString = Option.None<string>();
 var noneInteger = Option.None<int>();
 ```
 
 ## Pattern matching optional values
 
-```
+```csharp
 var option = Option.Some("Example value");
 var value = option is Some<string> some ? some.Value : "Something else";
 ```
 
 ## Fallback values using fluent syntax
 
-```
+```csharp
 var option = Option.None<string>();
 var optionalFallbackValue = Option.Some("Example value");
 var fallbackValue = Option.Some("Example value");
@@ -54,13 +51,13 @@ var fallbackValue = Option.Some("Example value");
 var fallbackToOptionalValue = option.Otherwise(optionalFallbackValue);
 var fallbackToValue = option.Otherwise(fallbackValue);
 
-var fallbackToOptionalValueProvidedByValueFactory = option.Otherwise(() => optionalFallbackValue);
-var fallbackToValueProvidedByValueFactory = option.Otherwise(() => fallbackValue);
+var fallbackToOptionalValueProvidedByFactory = option.Otherwise(() => optionalFallbackValue);
+var fallbackToValueProvidedByFactory = option.Otherwise(() => fallbackValue);
 ```
 
-## Choosing first value from many options
+## Choosing the first value from multiple options
 
-```
+```csharp
 var options = new[] {
     Option.None<string>(),
     Option.Some("Example value")
@@ -69,37 +66,38 @@ var options = new[] {
 var option = options.ChooseFirst();
 ```
 
-## Choosing existing values from collection
+## Selecting existing values from a collection
 
-```
-var collection = new Option<string>[]
-    {
-        Option.None<string>(),
-        Option.Some("1"),
-        Option.None<string>(),
-        Option.Some("2"),
-        Option.None<string>(),
-        Option.Some("3"),
-        Option.None<string>(),
-    };
-var values = collection.Choose(); // is [ "1", "2", "3" ]
-```
-## Choosing values with mapping
+```csharp
+var collection = new Option<string>[] {
+    Option.None<string>(),
+    Option.Some("1"),
+    Option.None<string>(),
+    Option.Some("2"),
+    Option.None<string>(),
+    Option.Some("3"),
+    Option.None<string>(),
+};
 
+var values = collection.Choose(); // returns [ "1", "2", "3" ]
 ```
+
+## Selecting values with mapping
+
+```csharp
 record ExampleType(string ExampleProperty);
 
 var collection = new[] {
-        Option.None<ExampleType>(),
-        Option.Some(new ExampleType("1")),
-        Option.None<ExampleType>(),
-        Option.Some(new ExampleType("2")),
-        Option.None<ExampleType>(),
-        Option.Some(new ExampleType("3")),
-        Option.None<ExampleType>(),
+    Option.None<ExampleType>(),
+    Option.Some(new ExampleType("1")),
+    Option.None<ExampleType>(),
+    Option.Some(new ExampleType("2")),
+    Option.None<ExampleType>(),
+    Option.Some(new ExampleType("3")),
+    Option.None<ExampleType>(),
 };
 
-var propertyValues = collection.Choose(entry => entry.ExampleProperty); // is [ "1", "2", "3" ]
+var propertyValues = collection.Choose(entry => entry.ExampleProperty); // returns [ "1", "2", "3" ]
 ```
 
 # JSON Serialization
@@ -110,4 +108,8 @@ The `Option<T>` type is serialized as an object with a single `ValueOrNull` prop
 
 This approach produces idiomatic JSON for both .NET and the broader JSON ecosystem, and the optional value is clearly described in OpenAPI documentation.
 
-For example, `Option.Some("Hello!")` is serialized as `{ "ValueOrNull": "Hello!" }`.
+For example, `Option.Some("Hello!")` is serialized as:
+
+```json
+{ "ValueOrNull": "Hello!" }
+```

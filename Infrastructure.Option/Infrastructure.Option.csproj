@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <PackageId>Infrastructure.Option</PackageId>
-    <Version>8.5.0</Version>    
+    <Version>8.6.0</Version>    
     <Description>Option type usable with C#</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/vilppu/Infrastructure.Option</PackageProjectUrl>
@@ -11,5 +11,14 @@
     <RootNamespace>Infrastructure</RootNamespace>
     <Authors>Timo Vilppu</Authors>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Copyright (C) 2025 Timo Vilppu</Copyright>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

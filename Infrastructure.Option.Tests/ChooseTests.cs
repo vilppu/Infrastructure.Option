@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
 
@@ -14,6 +15,25 @@ public class ChooseTests
             .Choose(example => example.ExampleProperty)
             .Equals("Example value")
             .ShouldBeTrue();
+    [Fact]
+    public async Task Choose_underlying_value_using_async_mapping() =>
+        (await Option.Some(new ExampleType("Example value"))
+            .Choose(async example => await Task.FromResult(example.ExampleProperty)))
+        .Equals("Example value")
+        .ShouldBeTrue();
+
+    [Fact]
+    public async Task Choose_underlying_async_value() =>
+        (await Task.FromResult<Option<ExampleType>>(Option.Some(new ExampleType("Example value")))
+            .Choose(example => example.ExampleProperty))
+            .Equals("Example value")
+            .ShouldBeTrue();
+    [Fact]
+    public async Task Choose_underlying_async_value_using_async_mapping() =>
+        (await Task.FromResult<Option<ExampleType>>(Option.Some(new ExampleType("Example value")))
+            .Choose(async example => await Task.FromResult(example.ExampleProperty)))
+        .Equals("Example value")
+        .ShouldBeTrue();
 
     [Fact]
     public void Choose_underlying_values() =>
@@ -56,6 +76,14 @@ public class ChooseTests
             .Create(new ExampleType("1"), Option<ExampleType>.None, new ExampleType("2"), Option<ExampleType>.None, new ExampleType("3"))
             .Choose(example => example.ExampleProperty)
             .ShouldBe(["1", "2", "3"]);
+
+    [Fact]
+    public async Task Choosing_from_underlying_values_using_async_mapping() =>
+        (await ImmutableList
+            .Create(new ExampleType("1"), Option<ExampleType>.None, new ExampleType("2"), Option<ExampleType>.None,
+                new ExampleType("3"))
+            .Choose(async example => await Task.FromResult(example.ExampleProperty)))
+        .ShouldBe(["1", "2", "3"]);
 
     [Fact]
     public void Choosing_from_nothing_results_to_nothing() =>

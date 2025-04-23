@@ -52,6 +52,10 @@ class Program
         };
 
         Console.WriteLine((Option<string>)("[" + string.Join(", ", examples.Choose(entry => entry.ExampleProperty)) + "]")); // [ 1, 2, 3 ]
+
+        var option = Option.Some("Example value");
+
+        Console.WriteLine(option.Holds(example => example == "Example value")); // prints true
     }
 }
 

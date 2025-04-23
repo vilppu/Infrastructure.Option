@@ -107,7 +107,7 @@ var propertyValues = collection.Choose(entry => entry.ExampleProperty); // retur
 ```csharp
 var option = Option.Some("Example value");
 
-var holds = option.Hold(example => example == "Example value"); // holds == true
+var holds = option.Holds(example => example == "Example value"); // holds == true
 ```
 
 # JSON Serialization

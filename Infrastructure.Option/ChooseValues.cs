@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure;
 
@@ -13,6 +14,15 @@ public static class ChooseValues
         option switch
         {
             Some<TValue> some => mapping(some),
+            _ => Option<TResult>.None
+        };
+    /// <summary>
+    /// Choose underlying value and apply async mapping.
+    /// </summary>
+    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Option<TValue> option, Func<TValue, Task<TResult>> mapping) =>
+        option switch
+        {
+            Some<TValue> some => await mapping(some),
             _ => Option<TResult>.None
         };
 
@@ -33,6 +43,12 @@ public static class ChooseValues
     /// </summary>
     public static IEnumerable<TResult> Choose<TValue, TResult>(this IEnumerable<Option<TValue>> options, Func<TValue, TResult> mapping) =>
         options.OfType<Some<TValue>>().Select(some => mapping(some));
+
+    /// <summary>
+    /// Choose underlying values and apply async mapping to those.
+    /// </summary>
+    public static async Task<IEnumerable<TResult>> Choose<TValue, TResult>(this IEnumerable<Option<TValue>> options, Func<TValue, Task<TResult>> mapping) =>
+        await Task.WhenAll(options.OfType<Some<TValue>>().Select(some => mapping(some)));
 
     /// <summary>
     /// Choose first underlying value.

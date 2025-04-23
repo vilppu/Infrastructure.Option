@@ -34,6 +34,12 @@ class Program
         Console.WriteLine(options.ChooseFirst(value => value == "6")); // prints ""
         Console.WriteLine(options.ChooseSingle(value => value == "6")); // prints ""
 
+        Console.WriteLine(
+            Option.Some("Hello")
+            .Choose(value => $"{value} world")
+            .Choose(value => $"{value}!")
+        ); // prints "Hello world!" by chaining the Choose() functions.
+
 
         var examples = new[] {
             Option.None<ExampleType>(),

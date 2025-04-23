@@ -12,7 +12,7 @@ public abstract record Option<T>
     /// <summary>
     /// Indicator intended for serializers to deduce if is value is <see cref="Some">something</see> or <see cref="None">nothing</see>.
     /// </summary>
-    public abstract object? ValueOrNull { get; }
+    internal abstract object? ValueOrNull { get; }
 
     /// <summary>
     /// Value wrapped as an optional.
@@ -42,13 +42,13 @@ public abstract record Option<T>
 [JsonConverter(typeof(OptionJsonConverter))]
 public sealed record Some<T>(T Value) : Option<T>
 {
+    internal override object? ValueOrNull => Value;
+
     public static implicit operator T(Some<T> option) =>
         option.Value;
 
     public static implicit operator Some<T>(T value) =>
         new(value);
-
-    public override object? ValueOrNull => Value;
 
     public override string ToString() =>
         Value!.ToString()!;
@@ -62,13 +62,13 @@ public sealed record None<T> : Option<T>
 {
     private None() { }
 
+    internal override object? ValueOrNull => null;
+
     /// <summary>
     /// Singleton instance.
     /// </summary>
     public static None<T> Instance =>
         new();
-
-    public override object? ValueOrNull => null;
 
     public override string ToString() =>
         string.Empty;

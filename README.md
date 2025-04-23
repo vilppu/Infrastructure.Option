@@ -102,6 +102,14 @@ var collection = new[] {
 var propertyValues = collection.Choose(entry => entry.ExampleProperty); // returns [ "1", "2", "3" ]
 ```
 
+## Checking if value matches the given predicate
+
+```csharp
+var option = Option.Some("Example value");
+
+var holds = option.Hold(example => example == "Example value"); // holds == true
+```
+
 # JSON Serialization
 
 `Infrastructure.Option` supports JSON serialization using `System.Text.Json` without requiring any additional dependencies.

@@ -123,3 +123,5 @@ For example, `Option.Some("Hello!")` is serialized as:
 ```json
 { "ValueOrNull": "Hello!" }
 ```
+
+---

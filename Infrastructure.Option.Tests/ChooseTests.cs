@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Shouldly;
@@ -19,6 +18,19 @@ public class ChooseTests
     [Fact]
     public async Task Choose_underlying_value_using_async_mapping() =>
         (await Option.Some(new ExampleType("Example value"))
+            .Choose(async example => await Task.FromResult(example.ExampleProperty)))
+        .Equals("Example value")
+        .ShouldBeTrue();
+
+    [Fact]
+    public async Task Choose_underlying_async_value() =>
+        (await Task.FromResult<Option<ExampleType>>(Option.Some(new ExampleType("Example value")))
+            .Choose(example => example.ExampleProperty))
+            .Equals("Example value")
+            .ShouldBeTrue();
+    [Fact]
+    public async Task Choose_underlying_async_value_using_async_mapping() =>
+        (await Task.FromResult<Option<ExampleType>>(Option.Some(new ExampleType("Example value")))
             .Choose(async example => await Task.FromResult(example.ExampleProperty)))
         .Equals("Example value")
         .ShouldBeTrue();

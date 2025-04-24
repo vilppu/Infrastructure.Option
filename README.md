@@ -47,7 +47,7 @@ var option = Option.None<string>();
 var result = option.Otherwise("Something else"); // result == "Something else"
 ```
 
-## `Choose()` underlying values from collectins
+## `Choose()` underlying values from collections
 
 ```csharp
 var collection = new Option<string>[] {
@@ -61,10 +61,10 @@ var collection = new Option<string>[] {
 };
 
 var values = collection.Choose(); // values == [ "1", "2", "3" ]
-var first = options.ChooseFirst(); // first == "1"
+var first = collection.ChooseFirst(); // first == "1"
 ```
 
-## `Choose()` underlying values from collectins with mapping
+## `Choose()` underlying values from collections with mapping
 
 ```csharp
 record ExampleType(string ExampleProperty);
@@ -104,5 +104,3 @@ For example, `Option.Some("Hello!")` is serialized as:
 ```json
 { "ValueOrNull": "Hello!" }
 ```
-
----

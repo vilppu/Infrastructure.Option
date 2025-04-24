@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.ComponentModel;
+using System.Text.Json.Serialization;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace Infrastructure;
 
@@ -9,10 +12,10 @@ namespace Infrastructure;
 [JsonConverter(typeof(OptionJsonConverter))]
 public abstract record Option<T>
 {
-    /// <summary>
-    /// Indicator intended for serializers to deduce if is value is <see cref="Some">something</see> or <see cref="None">nothing</see>.
-    /// </summary>
-    internal abstract object? ValueOrNull { get; }
+    // Indicator intended for serializers to deduce if is value is <see cref="Some">something</see> or <see cref="None">nothing</see>.
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("⚠️ Internal use only.", error: true)]
+    public abstract T? ValueOrNull { get; }
 
     /// <summary>
     /// Value wrapped as an optional.
@@ -28,6 +31,9 @@ public abstract record Option<T>
     public static Option<T> None =>
         None<T>.Instance;
 
+    /// <summary>
+    /// Define cast to nullable type.
+    /// </summary>
     public static implicit operator Option<T>(T? value) =>
         value is null
             ? None
@@ -42,14 +48,23 @@ public abstract record Option<T>
 [JsonConverter(typeof(OptionJsonConverter))]
 public sealed record Some<T>(T Value) : Option<T>
 {
-    internal override object? ValueOrNull => Value;
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("⚠️ Internal use only.", error: true)]
+    public override T? ValueOrNull => Value;
 
+    /// <summary>
+    /// Convert to underlying value
+    /// </summary>
     public static implicit operator T(Some<T> option) =>
         option.Value;
 
+    /// <summary>
+    /// Convert to optional
+    /// </summary>
     public static implicit operator Some<T>(T value) =>
         new(value);
 
+    /// <inheritdoc />
     public override string ToString() =>
         Value!.ToString()!;
 }
@@ -62,7 +77,9 @@ public sealed record None<T> : Option<T>
 {
     private None() { }
 
-    internal override object? ValueOrNull => null;
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("⚠️ Internal use only.", error: true)]
+    public override T? ValueOrNull => default;
 
     /// <summary>
     /// Singleton instance.
@@ -70,10 +87,14 @@ public sealed record None<T> : Option<T>
     public static None<T> Instance =>
         new();
 
+    /// <inheritdoc />
     public override string ToString() =>
         string.Empty;
 }
 
+/// <summary>
+/// Create <see cref="Option{T}"/> values
+/// </summary>
 public static class Option
 {
     /// <summary>

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure;
 
+/// <summary>
+/// Choose underlying option value(s)
+/// </summary>
 public static class ChooseValues
 {
     /// <summary>

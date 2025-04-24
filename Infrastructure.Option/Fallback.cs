@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure;
 
+/// <summary>
+/// Fallback value(s)
+/// </summary>
 public static class Fallback
 {
     /// <summary>

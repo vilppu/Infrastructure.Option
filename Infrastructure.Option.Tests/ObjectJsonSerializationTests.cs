@@ -17,6 +17,7 @@ public class ObjectJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<Option<string>>(serialized);
 
+        serialized.ShouldBe("{\"ValueOrNull\":null}");
         deserialized.ShouldBe(Option.None<string>());
     }
 
@@ -28,6 +29,7 @@ public class ObjectJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<Option<int>>(serialized);
 
+        serialized.ShouldBe("{\"ValueOrNull\":null}");
         deserialized.ShouldBe(Option.None<int>());
     }
 
@@ -39,6 +41,7 @@ public class ObjectJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<Option<ExampleReferenceType>>(serialized);
 
+        serialized.ShouldBe("{\"ValueOrNull\":{\"ExampleProperty\":\"Hello!\"}}");
         deserialized.ShouldBe(sut);
     }
 
@@ -50,6 +53,7 @@ public class ObjectJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<Option<ExampleValueType>>(serialized);
 
+        serialized.ShouldBe("{\"ValueOrNull\":{\"ExampleProperty\":\"Hello!\"}}");
         deserialized.ShouldBe(sut);
     }
 

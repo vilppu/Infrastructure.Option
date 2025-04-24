@@ -21,6 +21,7 @@ public class PropertyJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<TypeWithOptionalProperty<string>>(serialized);
 
+        serialized.ShouldBe("{\"OptionalProperty\":{\"ValueOrNull\":null}}");
         deserialized.ShouldBe(sut);
     }
     [Fact]
@@ -33,6 +34,7 @@ public class PropertyJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<TypeWithOptionalProperty<int>>(serialized);
 
+        serialized.ShouldBe("{\"OptionalProperty\":{\"ValueOrNull\":null}}");
         deserialized.ShouldBe(sut);
     }
 
@@ -46,6 +48,7 @@ public class PropertyJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<TypeWithOptionalProperty<ExampleReferenceType>>(serialized);
 
+        serialized.ShouldBe("{\"OptionalProperty\":{\"ValueOrNull\":{\"ExampleProperty\":\"Hello!\"}}}");
         deserialized.ShouldBe(sut);
     }
 
@@ -59,6 +62,7 @@ public class PropertyJsonSerializationTests
         var serialized = JsonSerializer.Serialize(sut);
         var deserialized = JsonSerializer.Deserialize<TypeWithOptionalProperty<ExampleValueType>>(serialized);
 
+        serialized.ShouldBe("{\"OptionalProperty\":{\"ValueOrNull\":{\"ExampleProperty\":\"Hello!\"}}}");
         deserialized.ShouldBe(sut);
     }
 

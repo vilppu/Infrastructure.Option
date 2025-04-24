@@ -5,17 +5,22 @@ using System.Text.Json.Serialization;
 
 namespace Infrastructure;
 
+/// <summary>
+/// Default JSON converter for <see cref="Option{T}"/>s
+/// </summary>
 public class OptionJsonConverter : JsonConverter<object>
 {
     private static readonly ConcurrentDictionary<Type, IGenericOptionJsonConverter> ReferenceTypeOptionJsonConverters = new();
     private static readonly ConcurrentDictionary<Type, IGenericOptionJsonConverter> ValueTypeOptionJsonConverters = new();
 
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert) =>
         typeToConvert.IsGenericType &&
         (typeToConvert.GetGenericTypeDefinition() == typeof(Option<>) ||
          typeToConvert.GetGenericTypeDefinition() == typeof(Some<>) ||
          typeToConvert.GetGenericTypeDefinition() == typeof(None<>));
 
+    /// <inheritdoc />
     public override object Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var optionValueType = typeToConvert.GetGenericArguments()[0];
@@ -24,6 +29,7 @@ public class OptionJsonConverter : JsonConverter<object>
         return optionJsonConverter.ReadObject(ref reader, typeToConvert, options);
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
     {
         var optionValueType = value.GetType().GetGenericArguments()[0];
@@ -59,23 +65,25 @@ public class OptionJsonConverter : JsonConverter<object>
 
 }
 
-public interface IGenericOptionJsonConverter
+interface IGenericOptionJsonConverter
 {
     object ReadObject(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options);
     void WriteObject(Utf8JsonWriter writer, object value, JsonSerializerOptions options);
 }
 
-public class ReferenceTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGenericOptionJsonConverter
+class ReferenceTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGenericOptionJsonConverter
     where T : class
 {
     public record SerializedOption(T? ValueOrNull);
 
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert) =>
         typeToConvert.IsGenericType &&
         (typeToConvert.GetGenericTypeDefinition() == typeof(Option<>) ||
          typeToConvert.GetGenericTypeDefinition() == typeof(Some<>) ||
          typeToConvert.GetGenericTypeDefinition() == typeof(None<>));
 
+    /// <inheritdoc />
     public override Option<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
         JsonSerializer.Deserialize<SerializedOption>(ref reader, options) switch
         {
@@ -84,7 +92,7 @@ public class ReferenceTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGe
         };
 
     public override void Write(Utf8JsonWriter writer, Option<T> value, JsonSerializerOptions options) =>
-        JsonSerializer.Serialize(writer, new SerializedOption((T?)value.ValueOrNull), options);
+        JsonSerializer.Serialize(writer, new SerializedOption(value is Some<T> some ? some.Value : null), options);
 
     public object ReadObject(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
         Read(ref reader, typeToConvert, options);
@@ -93,7 +101,7 @@ public class ReferenceTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGe
         Write(writer, (Option<T>)value, options);
 }
 
-public class ValueTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGenericOptionJsonConverter
+class ValueTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGenericOptionJsonConverter
     where T : struct
 {
     public record SerializedOption(T? ValueOrNull);
@@ -111,8 +119,8 @@ public class ValueTypeOptionJsonConverter<T> : JsonConverter<Option<T>>, IGeneri
             _ => Option<T>.None
         };
 
-    public override void Write(Utf8JsonWriter writer, Option<T> value, JsonSerializerOptions options) =>
-        JsonSerializer.Serialize(writer, new SerializedOption((T?)value.ValueOrNull), options);
+    public override void Write(Utf8JsonWriter writer, Option<T> value, JsonSerializerOptions options) => 
+        JsonSerializer.Serialize(writer, new SerializedOption(value is Some<T>  some ? some.Value : null), options);
 
     public object ReadObject(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
         Read(ref reader, typeToConvert, options);

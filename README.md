@@ -22,53 +22,32 @@ Basic manipulation of `Option` is done via the `Choose()` and `Otherwise()` func
 
 # Examples
 
-## Creating `Some` values
+## Creating `Option`s
 
 ```csharp
-var someString = Option.Some("Example value");
-var someInteger = Option.Some(12345);
+var some = Option.Some("Example value");
+var none = Option.None<string>();
 ```
 
-## Creating `None` values
-
-```csharp
-var noneString = Option.None<string>();
-var noneInteger = Option.None<int>();
-```
-
-## Pattern matching optional values
+## Pattern matching
 
 ```csharp
 var option = Option.Some("Example value");
-var value = option is Some<string> some ? some.Value : "Something else";
+
+var value = option is Some<string> some
+  ? some.Value
+  : "Something else";
 ```
 
-## Fallback values using fluent syntax
+## Fallback values using fluent `Otherwise` syntax
 
 ```csharp
 var option = Option.None<string>();
-var optionalFallbackValue = Option.Some("Example value");
-var fallbackValue = Option.Some("Example value");
 
-var fallbackToOptionalValue = option.Otherwise(optionalFallbackValue);
-var fallbackToValue = option.Otherwise(fallbackValue);
-
-var fallbackToOptionalValueProvidedByFactory = option.Otherwise(() => optionalFallbackValue);
-var fallbackToValueProvidedByFactory = option.Otherwise(() => fallbackValue);
+var result = option.Otherwise("Something else"); // result == "Something else"
 ```
 
-## Choosing the first value from multiple options
-
-```csharp
-var options = new[] {
-    Option.None<string>(),
-    Option.Some("Example value")
-};
-
-var option = options.ChooseFirst();
-```
-
-## Selecting existing values from a collection
+## `Choose()` underlying values from collectins
 
 ```csharp
 var collection = new Option<string>[] {
@@ -81,10 +60,11 @@ var collection = new Option<string>[] {
     Option.None<string>(),
 };
 
-var values = collection.Choose(); // returns [ "1", "2", "3" ]
+var values = collection.Choose(); // values == [ "1", "2", "3" ]
+var first = options.ChooseFirst(); // first == "1"
 ```
 
-## Selecting values with mapping
+## `Choose()` underlying values from collectins with mapping
 
 ```csharp
 record ExampleType(string ExampleProperty);
@@ -99,7 +79,8 @@ var collection = new[] {
     Option.None<ExampleType>(),
 };
 
-var propertyValues = collection.Choose(entry => entry.ExampleProperty); // returns [ "1", "2", "3" ]
+var values = collection.Choose(entry => entry.ExampleProperty); // values == [ "1", "2", "3" ]
+var chosen = await collection.Choose(async entry => await Task.FromResult(entry.ExampleProperty)); // chosen == [ "1", "2", "3" ]
 ```
 
 ## Checking if value matches the given predicate

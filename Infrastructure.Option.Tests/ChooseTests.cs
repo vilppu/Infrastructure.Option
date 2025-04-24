@@ -36,6 +36,39 @@ public class ChooseTests
         .ShouldBeTrue();
 
     [Fact]
+    public void Unwrap_underlying_value() =>
+        Option.Some<Option<string>>(Option.Some("Example value"))
+            .Choose()
+            .Equals("Example value")
+            .ShouldBeTrue();
+
+    [Fact]
+    public void Choose_underlying_value_with_mapping_to_optional_value() =>
+        Option.Some(new ExampleType("Example value"))
+            .Choose(example => (Option<string>)Option.Some(example.ExampleProperty))
+            .Equals("Example value")
+            .ShouldBeTrue();
+    [Fact]
+    public async Task Choose_underlying_value_using_async_mapping_to_optional_value() =>
+        (await Option.Some(new ExampleType("Example value"))
+            .Choose(async example => await Task.FromResult<Option<string>>(Option.Some(example.ExampleProperty))))
+        .Equals("Example value")
+        .ShouldBeTrue();
+
+    [Fact]
+    public async Task Choose_underlying_async_value_with_mapping_to_optional_value() =>
+        (await Task.FromResult<Option<ExampleType>>(Option.Some(new ExampleType("Example value")))
+            .Choose(example => (Option<string>)Option.Some(example.ExampleProperty)))
+        .Equals("Example value")
+        .ShouldBeTrue();
+    [Fact]
+    public async Task Choose_underlying_async_value_using_async_mapping_to_optional_value() =>
+        (await Task.FromResult<Option<ExampleType>>(Option.Some(new ExampleType("Example value")))
+            .Choose(async example => await Task.FromResult<Option<string>>(Option.Some(example.ExampleProperty))))
+        .Equals("Example value")
+        .ShouldBeTrue();
+
+    [Fact]
     public void Choose_underlying_values() =>
         ImmutableList
             .Create("1", Option<string>.None, "2", Option<string>.None, "3")

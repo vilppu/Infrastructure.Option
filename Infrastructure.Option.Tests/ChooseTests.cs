@@ -119,6 +119,22 @@ public class ChooseTests
         .ShouldBe(["1", "2", "3"]);
 
     [Fact]
+    public void Choosing_from_any_by_mapping_to_optional() =>
+        ImmutableList
+            .Create("1", "2", "3")
+            .Choose(example => example == "2" ? Option.None<string>() : Option.Some(example))
+            .ShouldBe(["1", "3"]);
+
+    [Fact]
+    public async Task Choosing_from_any_by_asynchronously_mapping_to_optional() =>
+        (await ImmutableList
+            .Create("1", "2", "3")
+            .Choose(async example => example == "2"
+                ? await Task.FromResult(Option.None<string>())
+                : await Task.FromResult(Option.Some(example))))
+            .ShouldBe(["1", "3"]);
+
+    [Fact]
     public void Choosing_from_nothing_results_to_nothing() =>
         Option.None<ExampleType>()
             .Choose(example => example.ExampleProperty)

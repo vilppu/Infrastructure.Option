@@ -29,80 +29,80 @@ public static class ChooseValues
     /// <summary>
     /// Choose underlying value and apply mapping.
     /// </summary>
-    public static Option<TResult> Choose<TValue, TResult>(this Option<TValue> option, Func<TValue, TResult> mapping) =>
+    public static Option<TResult> Choose<TSource, TResult>(this Option<TSource> option, Func<TSource, TResult> mapping) =>
         option switch
         {
-            Some<TValue> some => mapping(some),
+            Some<TSource> some => mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply async mapping.
     /// </summary>
-    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Option<TValue> option, Func<TValue, Task<TResult>> mapping) =>
+    public static async Task<Option<TResult>> Choose<TSource, TResult>(this Option<TSource> option, Func<TSource, Task<TResult>> mapping) =>
         option switch
         {
-            Some<TValue> some => await mapping(some),
+            Some<TSource> some => await mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply mapping.
     /// </summary>
-    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Task<Option<TValue>> option, Func<TValue, TResult> mapping) =>
-        await option switch
+    public static async Task<Option<TResult>> Choose<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, TResult> mapping) =>
+        await source switch
         {
-            Some<TValue> some => mapping(some),
+            Some<TSource> some => mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply async mapping.
     /// </summary>
-    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Task<Option<TValue>> option, Func<TValue, Task<TResult>> mapping) =>
-        await option switch
+    public static async Task<Option<TResult>> Choose<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<TResult>> mapping) =>
+        await source switch
         {
-            Some<TValue> some => await mapping(some),
+            Some<TSource> some => await mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply mapping to option.
     /// </summary>
-    public static Option<TResult> Choose<TValue, TResult>(this Option<TValue> option, Func<TValue, Option<TResult>> mapping) =>
+    public static Option<TResult> Choose<TSource, TResult>(this Option<TSource> option, Func<TSource, Option<TResult>> mapping) =>
         option switch
         {
-            Some<TValue> some => mapping(some),
+            Some<TSource> some => mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply async mapping to option.
     /// </summary>
-    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Option<TValue> option, Func<TValue, Task<Option<TResult>>> mapping) =>
+    public static async Task<Option<TResult>> Choose<TSource, TResult>(this Option<TSource> option, Func<TSource, Task<Option<TResult>>> mapping) =>
         option switch
         {
-            Some<TValue> some => await mapping(some),
+            Some<TSource> some => await mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply mapping to option.
     /// </summary>
-    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Task<Option<TValue>> option, Func<TValue, Option<TResult>> mapping) =>
-        await option switch
+    public static async Task<Option<TResult>> Choose<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Option<TResult>> mapping) =>
+        await source switch
         {
-            Some<TValue> some => mapping(some),
+            Some<TSource> some => mapping(some),
             _ => Option<TResult>.None
         };
 
     /// <summary>
     /// Choose underlying value and apply async mapping to option.
     /// </summary>
-    public static async Task<Option<TResult>> Choose<TValue, TResult>(this Task<Option<TValue>> option, Func<TValue, Task<Option<TResult>>> mapping) =>
-        await option switch
+    public static async Task<Option<TResult>> Choose<TSource, TResult>(this Task<Option<TSource>> source, Func<TSource, Task<Option<TResult>>> mapping) =>
+        await source switch
         {
-            Some<TValue> some => await mapping(some),
+            Some<TSource> some => await mapping(some),
             _ => Option<TResult>.None
         };
 
@@ -121,14 +121,26 @@ public static class ChooseValues
     /// <summary>
     /// Choose underlying values and apply mapping to those.
     /// </summary>
-    public static IEnumerable<TResult> Choose<TValue, TResult>(this IEnumerable<Option<TValue>> options, Func<TValue, TResult> mapping) =>
-        options.OfType<Some<TValue>>().Select(some => mapping(some));
+    public static IEnumerable<TResult> Choose<TSource, TResult>(this IEnumerable<Option<TSource>> source, Func<TSource, TResult> mapping) =>
+        source.OfType<Some<TSource>>().Select(some => mapping(some));
+
+    /// <summary>
+    /// Choose values by applying mapping to optional values.
+    /// </summary>
+    public static IEnumerable<TResult> Choose<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Option<TResult>> mapping) =>
+        source.Select(mapping).Choose();
+
+    /// <summary>
+    /// Choose values by applying async mapping to optional values.
+    /// </summary>
+    public static async Task<IEnumerable<TResult>> Choose<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Task<Option<TResult>>> mapping) =>
+        (await Task.WhenAll(source.Select(mapping))).Choose();
 
     /// <summary>
     /// Choose underlying values and apply async mapping to those.
     /// </summary>
-    public static async Task<IEnumerable<TResult>> Choose<TValue, TResult>(this IEnumerable<Option<TValue>> options, Func<TValue, Task<TResult>> mapping) =>
-        await Task.WhenAll(options.OfType<Some<TValue>>().Select(some => mapping(some)));
+    public static async Task<IEnumerable<TResult>> Choose<TSource, TResult>(this IEnumerable<Option<TSource>> source, Func<TSource, Task<TResult>> mapping) =>
+        await Task.WhenAll(source.OfType<Some<TSource>>().Select(some => mapping(some)));
 
     /// <summary>
     /// Choose first underlying value.

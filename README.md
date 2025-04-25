@@ -6,7 +6,7 @@ Get the NuGet package here: [Infrastructure.Option on NuGet](https://www.nuget.o
 
 # Overview
 
-`Option<T>` is a simple option type usable in C#.
+`Option<T>` is a simple option type for C# that emphasizes expressive and readable code by abstracting away awkward technical constructs.
 
 - `Option.Some<T>` represents an available value.
 - `Option.None<T>` represents the absence of a value.
@@ -19,6 +19,8 @@ Basic manipulation of `Option` is done via the `Choose()` and `Otherwise()` func
 
 - `Choose()` selects the underlying values, i.e., those of type `Some<T>`.
 - `Otherwise()` defines fallback behavior when encountering `None<T>`.
+
+There is also broad support for asynchronous code and working with collections of optional values using `Choose()` and `Otherwise()`.
 
 # Examples
 
@@ -39,7 +41,7 @@ var value = option is Some<string> some
   : "Something else";
 ```
 
-## Fallback values using fluent `Otherwise` syntax
+## Fallback with `Otherwise()`
 
 ```csharp
 var option = Option.None<string>();
@@ -102,5 +104,5 @@ This approach produces idiomatic JSON for both .NET and the broader JSON ecosyst
 For example, `Option.Some("Hello!")` is serialized as:
 
 ```json
-{ "ValueOrNull": "Hello!" }
+{ "valueOrNull": "Hello!" }
 ```

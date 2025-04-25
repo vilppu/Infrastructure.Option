@@ -2,8 +2,20 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <PackageId>Infrastructure.Option</PackageId>
-    <Version>8.10.0</Version>    
-    <Description>Option type usable with C#</Description>
+    <Version>8.11.0</Version>    
+    <Description>Infrastructure.Option is a lightweight, expressive Option&lt;T&gt; type for C# and .NET, designed to help developers write cleaner, more readable code. By abstracting away null checks and handling optional values in a functional style, it enhances code clarity and safety.
+
+This library emphasizes:
+
+Clear and readable code
+
+Lightweight and intuitive API: With simple methods like Choose() and Otherwise(), Option&lt;T&gt; makes it easy to work with optional values.
+
+Functional programming principles: Support for immutability and chaining
+
+JSON serialization support: Built-in serialization with System.Text.Json for seamless integration in modern .NET applications.
+
+Use Option&lt;T&gt; to handle nullable values and optional data types in a clean, idiomatic way.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/vilppu/Infrastructure.Option</PackageProjectUrl>
     <RepositoryUrl>https://github.com/vilppu/Infrastructure.Option</RepositoryUrl>
@@ -14,6 +26,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Copyright (C) 2025 Timo Vilppu</Copyright>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageTags>option, functional, monad, maybe, nullable, csharp, dotnet</PackageTags>
+    <Title>Infrastructure.Option – Lightweight Option Type for C# that emphasizes clean, expressive, and readable code</Title>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md">

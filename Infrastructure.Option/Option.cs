@@ -12,6 +12,8 @@ namespace Infrastructure;
 [JsonConverter(typeof(OptionJsonConverter))]
 public abstract record Option<T>
 {
+    internal Option() { }
+
     // Indicator intended for serializers to deduce if is value is <see cref="Some">something</see> or <see cref="None">nothing</see>.
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("⚠️ Internal use only.", error: true)]

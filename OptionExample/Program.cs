@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using System;
+using System.Collections.Immutable;
 
 namespace OptionExample;
 
@@ -33,6 +34,12 @@ class Program
         Console.WriteLine(options.ChooseSingle(value => value == "5")); // prints "5"
         Console.WriteLine(options.ChooseFirst(value => value == "6")); // prints ""
         Console.WriteLine(options.ChooseSingle(value => value == "6")); // prints ""
+
+
+        Console.WriteLine(ImmutableList.Create("1", "2", "3").FirstOrNone()); // prints "1"
+        Console.WriteLine(ImmutableList.Create("1", "2", "3").FirstOrNone(value => value == "2")); // prints "2"
+        Console.WriteLine(ImmutableList.Create("1").SingleOrNone()); // prints "1"
+        Console.WriteLine(ImmutableList.Create("1", "2", "3").SingleOrNone(value => value == "2")); // prints "2"
 
         Console.WriteLine(
             Option.Some("Hello")

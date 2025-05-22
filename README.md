@@ -2,11 +2,11 @@
 
 # Usage
 
-Get the NuGet package here: [Infrastructure.Option on NuGet](https://www.nuget.org/packages/Infrastructure.Option/)
+Get the NuGet package: [Infrastructure.Option on NuGet](https://www.nuget.org/packages/Infrastructure.Option/)
 
 # Overview
 
-`Option<T>` is a simple option type for C# that emphasizes expressive and readable code by abstracting away awkward technical constructs.
+`Option<T>` is a simple option type for C#
 
 - `Option.Some<T>` represents an available value.
 - `Option.None<T>` represents the absence of a value.
@@ -83,6 +83,22 @@ var collection = new[] {
 
 var values = collection.Choose(entry => entry.ExampleProperty); // values == [ "1", "2", "3" ]
 var chosen = await collection.Choose(async entry => await Task.FromResult(entry.ExampleProperty)); // chosen == [ "1", "2", "3" ]
+```
+
+## Pick singular value from collections
+
+```csharp
+var collection = new Option<string>[] {
+    Option.Some("1"),
+    Option.Some("2"),
+    Option.Some("3")
+};
+
+var first = collection.FirstOrNone(); // first == "1"
+var firstMatch = collection.FirstOrNone(element => element == "2"); // firstMatch == "2"
+
+var only = collection.SingleOrNone(); // first == "1"
+var onlyMatch = collection.SingleOrNone(element => element == "2"); // firstMatch == "2"
 ```
 
 ## Checking if value matches the given predicate

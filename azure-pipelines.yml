@@ -27,7 +27,6 @@ jobs:
       solution: '$(solution)'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:TargetFrameworks=$(targetFrameworks)'
 
   - task: VSTest@2
     inputs:
@@ -52,7 +51,7 @@ jobs:
       command: pack
       packagesToPack: '$(projectsToPack)'
       packDirectory: '$(Build.ArtifactStagingDirectory)/packages/releases'
-      arguments: '--configuration $(buildConfiguration) -p:TargetFrameworks=$(targetFrameworks)'
+      arguments: '--configuration $(buildConfiguration) -p:TargetFrameworks="$(targetFrameworks)"'
 
   - task: NuGetCommand@2
     displayName: 'nuget push'

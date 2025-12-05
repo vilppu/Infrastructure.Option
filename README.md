@@ -6,23 +6,62 @@ Get the NuGet package: [Infrastructure.Option on NuGet](https://www.nuget.org/pa
 
 # Overview
 
-`Option<T>` is a simple option type for C#
+The purpose of the `Infrastructure.Option` is to help you write code that is easier to read and understand.
 
-- `Option.Some<T>` represents an available value.
-- `Option.None<T>` represents the absence of a value.
+The `Infrastructure.Option` makes it explicit when a value might be missing, but it stays out of your sight when irrelevant.
 
-The `Option` static class provides factory methods to create instances of `Option<T>`.
+- `Option<T>` presents the situation when you don't know if the value is present or not.
+- `Option.Some<T>` tells that the value of type `T` is present.
+- `Option.None<T>` tells that the value of type `T` is not present.
+
+`Option.Some<T>` behaves like the object of type `T`, and you can, e.g., pass it directly to a method accepting a parameter of type `T`.
+
+`Option.None<T>` means that the value is not present so you cannot even accidentally try to access it.
+
+The `Option` provides fluent access to the underlying optional value with `Choose()` and `Otherwise()`.
+
+- `Choose()` applied to a single object selects the chosen property or returns null.
+- `Choose()` applied to a collection selects the underlying values, i.e., those of type `Some<T>`.
+- `Otherwise()` defines fallback behavior when encountering `None<T>`.
 
 For more information about option types, see [Option type on Wikipedia](https://en.wikipedia.org/wiki/Option_type).
 
-Basic manipulation of `Option` is done via the `Choose()` and `Otherwise()` functions.
+## JSON Serialization
 
-- `Choose()` selects the underlying values, i.e., those of type `Some<T>`.
-- `Otherwise()` defines fallback behavior when encountering `None<T>`.
+`Infrastructure.Option` supports JSON serialization using `System.Text.Json` without requiring any additional dependencies.
 
-There is also broad support for asynchronous code and working with collections of optional values using `Choose()` and `Otherwise()`.
+The `Option<T>` type is serialized as an object with a single `ValueOrNull` property.
+
+The OpenAPI documentation support is also provided without any additional dependencies.
+
+For example, `Option.Some("Hello!")` is serialized as:
+
+```json
+{ "valueOrNull": "Hello!" }
+```
+
+## ToString()
+
+`ToString()` called on `Option.Some` returns the result of the underlying object's `ToString()`.
+
+`ToString()` called on `Option.None` returns an empty string.
 
 # Examples
+
+## Basic usage
+
+```csharp
+using Infrastructure;
+using System;
+
+void Print(string value) => Console.WriteLine(value);
+
+var something = Option.Some("Something");
+var nothing = Option<string>.None;
+
+Print(something); // something is implicitly cast to string.
+// Print(nothing); // This does not compile
+```
 
 ## Creating `Option`s
 
@@ -34,12 +73,35 @@ var none = Option.None<string>();
 ## Pattern matching
 
 ```csharp
+using Infrastructure;
+using System;
+
 var option = Option.Some("Example value");
 
-var value = option is Some<string> some
-  ? some.Value
-  : "Something else";
+var value = option switch
+{
+    { Value: {} some } => some,
+    _ => "Something else"
+};
+
+Console.WriteLine(value); // Prints: Example value
 ```
+
+## `Choose()` underlying value
+
+```csharp
+using Infrastructure;
+using System;
+
+Option<Country> optionalCountry = new Country("Finland");
+
+var nameOfTheCountry = optionalCountry.Choose(country => country.Name); // nameOfTheCountry is of type Option<string>
+
+Console.WriteLine(nameOfTheCountry); // Prints: Finland
+
+record Country(string Name);
+```
+
 
 ## Fallback with `Otherwise()`
 
@@ -107,18 +169,4 @@ var onlyMatch = collection.SingleOrNone(element => element == "2"); // firstMatc
 var option = Option.Some("Example value");
 
 var holds = option.Holds(example => example == "Example value"); // holds == true
-```
-
-# JSON Serialization
-
-`Infrastructure.Option` supports JSON serialization using `System.Text.Json` without requiring any additional dependencies.
-
-The `Option<T>` type is serialized as an object with a single `ValueOrNull` property that contains the wrapped value.
-
-This approach produces idiomatic JSON for both .NET and the broader JSON ecosystem, and the optional value is clearly described in OpenAPI documentation.
-
-For example, `Option.Some("Hello!")` is serialized as:
-
-```json
-{ "valueOrNull": "Hello!" }
 ```

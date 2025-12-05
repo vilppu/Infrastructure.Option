@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <PackageId>Infrastructure.Option</PackageId>
-    <Version>10.0.0</Version>    
+    <Version>10.0.2</Version>    
     <Description>Simple optional type for .NET</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/vilppu/Infrastructure.Option</PackageProjectUrl>
